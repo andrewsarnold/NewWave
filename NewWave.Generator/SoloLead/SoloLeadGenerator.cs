@@ -64,14 +64,18 @@ namespace NewWave.Generator.SoloLead
 		private static List<MidiPitch> GetPitches(Chord chord, ScaleType scaleType, int count, int octave)
 		{
 			var interval = 0;
-			var intervals = new List<int>();
+			var pitchesInChord = chord.Pitches(octave).Select(p => p.FromMidiPitch()).ToList();
+			var pitches = new List<MidiPitch>();
+			var stdDev = 0.5;
 			for (var i = 0; i < count; i++)
 			{
-				interval = Randomizer.Clamp(interval + Randomizer.Clamp(Randomizer.NextNormalized(0, 1.75), -4, 4), -7, 7);
-				intervals.Add(interval);
+				interval = Randomizer.Clamp(interval + Randomizer.Clamp(Randomizer.NextNormalized(0, stdDev), -4, 4), -7, 7);
+				var pitch = ScaleLibrary.Step(chord.BasePitch, scaleType, chord.BasePitch.ToMidiPitch(octave), interval);
+				pitches.Add(pitch);
+				stdDev = pitchesInChord.Contains(pitch.FromMidiPitch()) ? 0.75 : 2;
 			}
 
-			return intervals.Select(i => ScaleLibrary.Step(chord.BasePitch, scaleType, chord.BasePitch.ToMidiPitch(octave), i)).ToList();
+			return pitches;
 		}
 
 		private static List<List<double>> LengthSegments4 => new List<List<double>>
