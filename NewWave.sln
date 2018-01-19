@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewWave.Test", "NewWave.Test\NewWave.Test.csproj", "{2710E02C-51D2-42C7-96F8-0DDDD3FD3021}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -15,6 +15,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewWave.Generator", "NewWave.Generator\NewWave.Generator.csproj", "{B48F521E-0AA9-4EAB-9EC1-ECBC726981DD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewWave.Library", "NewWave.Library\NewWave.Library.csproj", "{F826AE15-ED89-4CF3-92E4-BF3B8DC5A53C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewWave.Wpf", "NewWave.Wpf\NewWave.Wpf.csproj", "{81734EE8-4914-4ACD-A421-6734C70D4B42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,8 +44,15 @@ Global
 		{F826AE15-ED89-4CF3-92E4-BF3B8DC5A53C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F826AE15-ED89-4CF3-92E4-BF3B8DC5A53C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F826AE15-ED89-4CF3-92E4-BF3B8DC5A53C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81734EE8-4914-4ACD-A421-6734C70D4B42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81734EE8-4914-4ACD-A421-6734C70D4B42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81734EE8-4914-4ACD-A421-6734C70D4B42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81734EE8-4914-4ACD-A421-6734C70D4B42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {167F7E86-7A2B-4297-A3E4-A1002F48C055}
 	EndGlobalSection
 EndGlobal
