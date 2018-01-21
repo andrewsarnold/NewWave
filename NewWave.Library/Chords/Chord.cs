@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using NewWave.Library.Pitches;
 using NewWave.Midi;
 
@@ -29,6 +30,16 @@ namespace NewWave.Library.Chords
 			_added = added;
 			Inversion = inversion;
 			IsInverted = true;
+		}
+
+		public IEnumerable<MidiPitch> PitchesHigherThan(MidiPitch lowestPossiblePitch)
+		{
+			var pitches = Pitches(-1);
+			while (pitches.Any(p => p < lowestPossiblePitch))
+			{
+				pitches = pitches.Select(p => p + 12);
+			}
+			return pitches;
 		}
 
 		public IEnumerable<MidiPitch> Pitches(int rootOctave)

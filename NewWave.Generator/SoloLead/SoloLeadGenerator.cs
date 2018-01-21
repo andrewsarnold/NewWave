@@ -11,36 +11,37 @@ namespace NewWave.Generator.SoloLead
 {
 	internal static class SoloLeadGenerator
 	{
-		internal static IEnumerable<Note> GetSoloLead(SongInfo songInfo, int length, List<Tuple<int, Chord>> chordProgression)
+		internal static IEnumerable<Note> GetSoloLead(SongInfo songInfo, int totalLength, List<Tuple<int, Chord>> chordProgression)
 		{
 			var notes = new List<Note>();
-			var lastIndex = -1;
-			var thisStart = 0.0;
-			var lengths = GetNoteLengths(length, songInfo.Feel);
-
-			for (var note = 0; note < lengths.Count; note++)
+			const int octave = 4;
+			
+			for (var index = 0; index < chordProgression.Count; index++)
 			{
-				var thisChord = chordProgression.Last(c => c.Item1 <= note).Item2;
-				var thisScale = ScaleLibrary.GetScale(thisChord.BasePitch, ScaleType.MinorPentatonic).ToList();
-				var interval = Randomizer.Clamp(Randomizer.NextNormalized(0, 1.5), -7, 7);
-				var thisIndex = Randomizer.Clamp(lastIndex + interval, 0, thisScale.Count - 1);
-				var thisPitch = thisScale[thisIndex];
-				var thisLength = lengths[note];
+				var chordTuple = chordProgression[index];
+				var startBeat = chordTuple.Item1;
+				var endBeat = index < chordProgression.Count - 1
+					? chordProgression[index + 1].Item1
+					: totalLength;
+				var length = endBeat - startBeat;
+				var chord = chordTuple.Item2;
+				var scaleType = chord.Quality == ChordQuality.Minor ? ScaleType.MinorPentatonic : ScaleType.MajorPentatonic;
+				var lengths = GetNoteLengths(length, songInfo.Feel);
+				var pitches = GetPitches(chord, scaleType, lengths.Count, octave);
+				var thisStart = (double)startBeat;
 
-				if (thisStart + thisLength > length)
+				for (var i = 0; i < lengths.Count; i++)
 				{
-					thisLength = length - thisStart;
+					if (thisStart >= endBeat) continue;
+					if (thisStart + lengths[i] > endBeat)
+					{
+						lengths[i] = endBeat - thisStart;
+					}
+					notes.Add(new Note(thisStart, lengths[i], pitches[i], Velocity.Ff));
+					thisStart += lengths[i];
 				}
-
-				if (thisStart >= length)
-				{
-					break;
-				}
-
-				notes.Add(new Note(thisStart, thisLength, thisPitch.ToMidiPitch(4), Velocity.Ff));
-				lastIndex = thisIndex;
-				thisStart += thisLength;
 			}
+
 			return notes;
 		}
 
@@ -58,6 +59,19 @@ namespace NewWave.Generator.SoloLead
 			}
 
 			return lengths;
+		}
+
+		private static List<MidiPitch> GetPitches(Chord chord, ScaleType scaleType, int count, int octave)
+		{
+			var interval = 0;
+			var intervals = new List<int>();
+			for (var i = 0; i < count; i++)
+			{
+				interval = Randomizer.Clamp(interval + Randomizer.Clamp(Randomizer.NextNormalized(0, 1.75), -4, 4), -7, 7);
+				intervals.Add(interval);
+			}
+
+			return intervals.Select(i => ScaleLibrary.Step(chord.BasePitch, scaleType, chord.BasePitch.ToMidiPitch(octave), i)).ToList();
 		}
 
 		private static List<List<double>> LengthSegments4 => new List<List<double>>

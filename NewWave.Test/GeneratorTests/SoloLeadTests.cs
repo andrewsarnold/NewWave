@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NewWave.Core;
 using NewWave.Generator;
 using NewWave.Generator.ChordProgressions;
 using NewWave.Generator.Sections;
-using NewWave.Generator.SoloLead;
-using NewWave.Library.Chords;
-using NewWave.Library.Pitches;
-using NewWave.Midi;
 
 namespace NewWave.Test.GeneratorTests
 {
