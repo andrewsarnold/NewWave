@@ -102,6 +102,10 @@
       <Project>{B48F521E-0AA9-4EAB-9EC1-ECBC726981DD}</Project>
       <Name>NewWave.Generator</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NewWave.Library\NewWave.Library.csproj">
+      <Project>{F826AE15-ED89-4CF3-92E4-BF3B8DC5A53C}</Project>
+      <Name>NewWave.Library</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

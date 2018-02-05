@@ -4,8 +4,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
 using NewWave.Generator;
 using NewWave.Generator.Parameters;
+using NewWave.Library.Pitches;
+using NewWave.Library.Tunings;
 
 namespace NewWave.Wpf
 {
@@ -13,6 +16,8 @@ namespace NewWave.Wpf
 	{
 		private BackgroundWorker _generator;
 		private BackgroundWorker _renderer;
+
+		private ParameterList _parameterList;
 		private GeneratedSong _song;
 
 		private readonly string _exportFolder = $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyMusic)}\NewWave Export";
@@ -22,6 +27,7 @@ namespace NewWave.Wpf
 			InitializeComponent();
 			Title = $"{FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductName} {Assembly.GetExecutingAssembly().GetName().Version}";
 			InitializeGenerators();
+			InitializeParameters();
 		}
 
 		private void InitializeGenerators()
@@ -36,7 +42,7 @@ namespace NewWave.Wpf
 				}
 
 				var song = new GeneratedSong();
-				song.Generate(new ParameterList());
+				song.Generate(_parameterList);
 				args.Result = song;
 			};
 			_generator.RunWorkerCompleted += (o, args) =>
@@ -66,10 +72,16 @@ namespace NewWave.Wpf
 			};
 		}
 
+		private void InitializeParameters()
+		{
+			_parameterList = new ParameterList();
+		}
+
 		private void Generate(object sender, RoutedEventArgs e)
 		{
 			BtnGenerate.Content = "Generating...";
 			BtnGenerate.IsEnabled = false;
+			SetParameters();
 			_generator.RunWorkerAsync();
 		}
 
@@ -78,6 +90,14 @@ namespace NewWave.Wpf
 			BtnRender.Content = "Rendering...";
 			BtnRender.IsEnabled = false;
 			_renderer.RunWorkerAsync();
+		}
+
+		private void SetParameters()
+		{
+			var isDropTuning = ((ComboBoxItem)CmbTuning.SelectedItem).Content.ToString() == "Drop";
+			var key = PitchExtensions.FromString(((ComboBoxItem)CmbKey.SelectedItem).Content.ToString());
+			_parameterList.GuitarTuning = GuitarTuningLibrary.FromPitch(key, isDropTuning);
+			_parameterList.BassTuning = _parameterList.GuitarTuning.ToBassTuning();
 		}
 	}
 }
