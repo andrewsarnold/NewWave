@@ -39,9 +39,9 @@ namespace NewWave.Wpf
 				{
 					switch (node.Data.Quality)
 					{
-						case ChordQuality.Minor:
-							return node.Multiply(MajorAffinity);
 						case ChordQuality.Major:
+							return node.Multiply(MajorAffinity);
+						case ChordQuality.Minor:
 							return node.Multiply(MinorAffinity);
 						case ChordQuality.Diminished:
 							return node.Multiply(DiminishedAffinity);

@@ -71,6 +71,19 @@ namespace NewWave.Generator
 			return sb.ToString();
 		}
 
+		public string WriteSections()
+		{
+			var sb = new StringBuilder();
+			sb.AppendLine("----------");
+			foreach (var section in Sections)
+			{
+				sb.AppendLine($"-- {section.Type}");
+				sb.AppendLine($"Chords: {string.Join(" - ", section.Chords.Select(c => c.Item2))}");
+				sb.AppendLine($"Length: {section.Measures}");
+			}
+			return sb.ToString();
+		}
+
 		private static List<ChordProgression> GetDistinctChordProgressions(ParameterList parameters, int amount)
 		{
 			var progressions = new List<ChordProgression>();

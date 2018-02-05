@@ -49,7 +49,7 @@ namespace NewWave.Generator.Sections
 				GenerateBasicGroove(groove, out kicks, out hihats, out snares);
 			}
 
-			Notes.AddRange(hihats.Select(h => new PercussionNote(h, _timeKeeper, Velocity.Fff)));
+			Notes.AddRange(hihats.Select((h, i) => new PercussionNote(h, _timeKeeper, i % 2 == 0 ? Velocity.Fff : Velocity.F)));
 			Notes.AddRange(kicks.Select(k => new PercussionNote(k, Percussion.BassDrum1, Velocity.Fff)));
 			Notes.AddRange(snares.Select(s => new PercussionNote(s, Percussion.SnareDrum1, Velocity.Fff)));
 		}

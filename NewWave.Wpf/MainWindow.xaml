@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" Height="350" Width="550">
+        mc:Ignorable="d" Height="350" Width="750">
 	<Window.Resources>
 		<Style TargetType="Label">
 			<Setter Property="FontSize" Value="20" />
@@ -19,8 +19,8 @@
     <Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*" />
-			<ColumnDefinition Width="Auto" />
-			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="220" />
+			<ColumnDefinition Width="190" />
 		</Grid.ColumnDefinitions>
 
 		<ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Column="0">
@@ -65,20 +65,22 @@
 				
 				<Label>Chord progression params</Label>
 				<TextBlock>Affinity for major</TextBlock>
-				<Slider Name="SldChordMajor" Value="1" Minimum="0" Maximum="10" SmallChange="0.1" TickPlacement="TopLeft" TickFrequency="0.1" AutoToolTipPlacement="TopLeft"></Slider>
+				<Slider Name="SldChordMajor" Value="1" Minimum="0" Maximum="10" SmallChange="0.1" TickPlacement="TopLeft" TickFrequency="0.5" AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="2"></Slider>
 				<TextBlock>Affinity for minor</TextBlock>
-				<Slider Name="SldChordMinor" Value="1" Minimum="0" Maximum="10" SmallChange="0.1" TickPlacement="TopLeft" TickFrequency="0.1" AutoToolTipPlacement="TopLeft"></Slider>
+				<Slider Name="SldChordMinor" Value="1" Minimum="0" Maximum="10" SmallChange="0.1" TickPlacement="TopLeft" TickFrequency="0.5" AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="2"></Slider>
 				<TextBlock>Affinity for diminished</TextBlock>
-				<Slider Name="SldChordDim" Value="1" Minimum="0" Maximum="10" SmallChange="0.1" TickPlacement="TopLeft" TickFrequency="0.1" AutoToolTipPlacement="TopLeft"></Slider>
+				<Slider Name="SldChordDim" Value="1" Minimum="0" Maximum="10" SmallChange="0.1" TickPlacement="TopLeft" TickFrequency="0.5" AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="2"></Slider>
 			</StackPanel>
 		</ScrollViewer>
 
-		<StackPanel Grid.Column="1">
-			<Label>Generated song</Label>
-			<Button Click="Generate" Name="BtnGenerate" MinWidth="75" Padding="10">Generate</Button>
+		<ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Column="1">
+			<StackPanel>
+				<Label>Generated song</Label>
+				<Button Click="Generate" Name="BtnGenerate" MinWidth="75" Padding="10">Generate</Button>
 
-			<TextBlock Name="TxtGeneratedResults" />
-		</StackPanel>
+				<TextBlock Name="TxtGeneratedResults" />
+			</StackPanel>
+		</ScrollViewer>
 
 		<StackPanel Grid.Column="2">
 			<Label>Rendered song</Label>

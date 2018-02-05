@@ -85,5 +85,10 @@ namespace NewWave.Library.Pitches
 
 			return p;
 		}
+
+		public static Pitch Add(this Pitch p, int amount)
+		{
+			return (Pitch)((int)(p + amount) % 12);
+		}
 	}
 }

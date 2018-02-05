@@ -50,7 +50,7 @@ namespace NewWave.Wpf
 				BtnGenerate.IsEnabled = true;
 				_song = (GeneratedSong)args.Result;
 				BtnRender.IsEnabled = true;
-				TxtGeneratedResults.Text = _song.WriteStats();
+				TxtGeneratedResults.Text = $"{_song.WriteStats()}\n{_song.WriteSections()}";
 			};
 
 			_renderer = new BackgroundWorker();
