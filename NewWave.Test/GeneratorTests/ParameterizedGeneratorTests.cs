@@ -5,6 +5,7 @@ using NewWave.Core;
 using NewWave.Generator;
 using NewWave.Generator.Parameters;
 using NewWave.Generator.Sections;
+using NewWave.Library.Pitches;
 using NewWave.Library.Tunings;
 
 namespace NewWave.Test.GeneratorTests
@@ -24,7 +25,7 @@ namespace NewWave.Test.GeneratorTests
 			var parameters = new ParameterList
 			{
 				GuitarTuning = GuitarTuningLibrary.DropDGuitarTuning,
-				MinorKeyFunc = () => ParameterLibrary.GetKey(GuitarTuningLibrary.DropDGuitarTuning),
+				MinorKeyFunc = () => ParameterLibrary.GetKey(GuitarTuningLibrary.DropDGuitarTuning).FromMidiPitch(),
 				ChordProgressionFilter = ParameterLibrary.MinorFilter,
 				TimeSignatureFunc = () => new TimeSignature((Randomizer.ProbabilityOfTrue(0.5) ? 1 : 2) * (Randomizer.ProbabilityOfTrue(0.5) ? 3 : 4), 4),
 				TempoMean = 130,

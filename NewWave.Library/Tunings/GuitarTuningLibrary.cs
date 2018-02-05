@@ -28,7 +28,7 @@ namespace NewWave.Library.Tunings
 
 		public static GuitarTuning ToBassTuning(this GuitarTuning t)
 		{
-			return new GuitarTuning(t.Retune(-12).Pitches.Take(4).ToArray());
+			return new GuitarTuning(t.Pitches.Take(4).Select(p => p - 12).ToArray());
 		}
 	}
 }

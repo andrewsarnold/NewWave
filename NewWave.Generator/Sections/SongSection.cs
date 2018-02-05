@@ -190,9 +190,9 @@ namespace NewWave.Generator.Sections
 			return GrooveGenerator.GenerateGroove(_songInfo);
 		}
 
-		private static Chord TransposeForKey(MidiPitch key, Chord result)
+		private static Chord TransposeForKey(Pitch key, Chord result)
 		{
-			var transposeDiff = key - MidiPitch.C0;
+			var transposeDiff = key - Pitch.C;
 			result.Transpose(transposeDiff);
 			return result;
 		}

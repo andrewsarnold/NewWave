@@ -15,7 +15,7 @@ namespace NewWave.Generator
 		private ParameterList _parameters;
 		public ParameterList Parameters
 		{
-			get => _parameters;
+			get { return _parameters; }
 			set
 			{
 				_parameters = value;

@@ -2,8 +2,8 @@ using System;
 using NewWave.Core;
 using NewWave.Generator.Sections;
 using NewWave.Library.Chords;
+using NewWave.Library.Pitches;
 using NewWave.Library.Tunings;
-using NewWave.Midi;
 
 namespace NewWave.Generator.Parameters
 {
@@ -14,7 +14,7 @@ namespace NewWave.Generator.Parameters
 		public double TempoStandardDeviation;
 		public double LengthInSecondsMean;
 		public double LengthInSecondsStandardDeviation;
-		public MidiPitch MajorKey;
+		public Pitch MajorKey;
 		public Func<TimeSignature> TimeSignatureFunc;
 		public Func<TimeSignature, int> FeelFunc;
 		public Func<MarkovChainNode<Chord>, MarkovChainNode<Chord>> ChordProgressionFilter;
@@ -25,18 +25,18 @@ namespace NewWave.Generator.Parameters
 		public Func<SectionType, DrumStyle> DrumStyle;
 		public Func<SectionType, double> RiffResolutionFunc;
 
-		public MidiPitch MinorKey
+		public Pitch MinorKey
 		{
 			get { return MajorKey - 3; }
 			private set { MajorKey = value + 3; }
 		}
 
-		public Func<MidiPitch> MajorKeyFunc
+		public Func<Pitch> MajorKeyFunc
 		{
 			set { MajorKey = value(); }
 		}
 
-		public Func<MidiPitch> MinorKeyFunc
+		public Func<Pitch> MinorKeyFunc
 		{
 			set { MinorKey = value(); }
 		}
@@ -48,7 +48,7 @@ namespace NewWave.Generator.Parameters
 			TempoStandardDeviation = 0;
 			LengthInSecondsMean = 180;
 			LengthInSecondsStandardDeviation = 0;
-			MajorKeyFunc = () => MidiPitch.G3;
+			MajorKeyFunc = () => Pitch.G;
 			TimeSignatureFunc = () => TimeSignature.CommonTime;
 			FeelFunc = t => 4;
 			ChordProgressionFilter = node => node;

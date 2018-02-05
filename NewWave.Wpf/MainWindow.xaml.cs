@@ -99,7 +99,7 @@ namespace NewWave.Wpf
 		{
 			var isDropTuning = ((ComboBoxItem)CmbTuning.SelectedItem).Content.ToString() == "Drop";
 			var key = PitchExtensions.FromString(((ComboBoxItem)CmbKey.SelectedItem).Content.ToString());
-			_parameterList.MinorKeyFunc = () => key.ToMidiPitch(3);
+			_parameterList.MinorKeyFunc = () => key;
 			_parameterList.GuitarTuning = GuitarTuningLibrary.FromPitch(key, isDropTuning);
 			_parameterList.BassTuning = _parameterList.GuitarTuning.ToBassTuning();
 			_parameterList.TempoMean = SldTempoMean.Value;
