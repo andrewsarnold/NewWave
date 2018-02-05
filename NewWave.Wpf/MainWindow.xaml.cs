@@ -53,6 +53,9 @@ namespace NewWave.Wpf
 				BtnGenerate.IsEnabled = true;
 				_song = (GeneratedSong)args.Result;
 				BtnRender.IsEnabled = true;
+
+				var length = new TimeSpan(0, 0, (int)_song.SongInfo.LengthInSeconds).ToString(@"mm\:ss");
+				TxtGeneratedResults.Text = $"Tempo: {_song.SongInfo.Tempo} bpm\nTarget length: {length}";
 			};
 
 			_renderer = new BackgroundWorker();
@@ -100,6 +103,10 @@ namespace NewWave.Wpf
 			var key = PitchExtensions.FromString(((ComboBoxItem)CmbKey.SelectedItem).Content.ToString());
 			_parameterList.GuitarTuning = GuitarTuningLibrary.FromPitch(key, isDropTuning);
 			_parameterList.BassTuning = _parameterList.GuitarTuning.ToBassTuning();
+			_parameterList.TempoMean = SldTempoMean.Value;
+			_parameterList.TempoStandardDeviation = SldTempoStdDev.Value;
+			_parameterList.LengthInSecondsMean = SldLengthMean.Value;
+			_parameterList.LengthInSecondsStandardDeviation = SldLengthStdDev.Value;
 		}
 
 		private void LoadParameters()
@@ -144,6 +151,11 @@ namespace NewWave.Wpf
 					CmbKey.SelectedIndex = 8;
 					break;
 			}
+
+			SldTempoMean.Value = _parameterList.TempoMean;
+			SldTempoStdDev.Value = _parameterList.TempoStandardDeviation;
+			SldLengthMean.Value = _parameterList.LengthInSecondsMean;
+			SldLengthStdDev.Value = _parameterList.LengthInSecondsStandardDeviation;
 		}
 
 		private void LoadParams(object sender, RoutedEventArgs e)

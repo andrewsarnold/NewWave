@@ -30,11 +30,13 @@
 					<Button Click="LoadParams">Load</Button>
 					<Button Click="SaveParams">Save</Button>
 				</StackPanel>
+				
 				<TextBlock>Guitar tuning</TextBlock>
 				<ComboBox Name="CmbTuning">
 					<ComboBoxItem IsSelected="True">Standard</ComboBoxItem>
 					<ComboBoxItem>Drop</ComboBoxItem>
 				</ComboBox>
+				
 				<TextBlock>Guitar key</TextBlock>
 				<ComboBox Name="CmbKey">
 					<ComboBoxItem IsSelected="True">E</ComboBoxItem>
@@ -50,12 +52,24 @@
 					<ComboBoxItem>Gb</ComboBoxItem>
 					<ComboBoxItem>F</ComboBoxItem>
 				</ComboBox>
+				
+				<TextBlock>Tempo mean</TextBlock>
+				<Slider Name="SldTempoMean" Value="120" Minimum="60" Maximum="240" TickPlacement="TopLeft" TickFrequency="20" AutoToolTipPlacement="TopLeft"></Slider>
+				<TextBlock>Tempo standard deviation</TextBlock>
+				<Slider Name="SldTempoStdDev" Value="0" Minimum="0" Maximum="40" TickPlacement="TopLeft" TickFrequency="5" AutoToolTipPlacement="TopLeft"></Slider>
+
+				<TextBlock>Length (target) mean</TextBlock>
+				<Slider Name="SldLengthMean" Value="180" Minimum="0" Maximum="600" TickPlacement="TopLeft" TickFrequency="20" AutoToolTipPlacement="TopLeft"></Slider>
+				<TextBlock>Length (target) standard deviation</TextBlock>
+				<Slider Name="SldLengthStdDev" Value="0" Minimum="0" Maximum="240" TickPlacement="TopLeft" TickFrequency="5" AutoToolTipPlacement="TopLeft"></Slider>
 			</StackPanel>
 		</ScrollViewer>
 
 		<StackPanel Grid.Column="1">
 			<Label>Generated song</Label>
 			<Button Click="Generate" Name="BtnGenerate" MinWidth="75" Padding="10">Generate</Button>
+
+			<TextBlock Name="TxtGeneratedResults" />
 		</StackPanel>
 
 		<StackPanel Grid.Column="2">
