@@ -62,6 +62,14 @@
 				<Slider Name="SldLengthMean" Value="180" Minimum="0" Maximum="600" TickPlacement="TopLeft" TickFrequency="20" AutoToolTipPlacement="TopLeft"></Slider>
 				<TextBlock>Length (target) standard deviation</TextBlock>
 				<Slider Name="SldLengthStdDev" Value="20" Minimum="0" Maximum="240" TickPlacement="TopLeft" TickFrequency="5" AutoToolTipPlacement="TopLeft"></Slider>
+				
+				<Label>Chord progression params</Label>
+				<TextBlock>Affinity for major</TextBlock>
+				<Slider Name="SldChordMajor" Value="1" Minimum="0" Maximum="10" SmallChange="0.1" TickPlacement="TopLeft" TickFrequency="0.1" AutoToolTipPlacement="TopLeft"></Slider>
+				<TextBlock>Affinity for minor</TextBlock>
+				<Slider Name="SldChordMinor" Value="1" Minimum="0" Maximum="10" SmallChange="0.1" TickPlacement="TopLeft" TickFrequency="0.1" AutoToolTipPlacement="TopLeft"></Slider>
+				<TextBlock>Affinity for diminished</TextBlock>
+				<Slider Name="SldChordDim" Value="1" Minimum="0" Maximum="10" SmallChange="0.1" TickPlacement="TopLeft" TickFrequency="0.1" AutoToolTipPlacement="TopLeft"></Slider>
 			</StackPanel>
 		</ScrollViewer>
 

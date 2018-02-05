@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using Microsoft.Win32;
 using NewWave.Generator;
 using NewWave.Generator.Parameters;
+using NewWave.Library.Chords;
 using NewWave.Library.Pitches;
 using NewWave.Library.Tunings;
 
@@ -106,6 +107,24 @@ namespace NewWave.Wpf
 			_parameterList.TempoStandardDeviation = SldTempoStdDev.Value;
 			_parameterList.LengthInSecondsMean = SldLengthMean.Value;
 			_parameterList.LengthInSecondsStandardDeviation = SldLengthStdDev.Value;
+
+			var min = SldChordMinor.Value;
+			var maj = SldChordMajor.Value;
+			var dim = SldChordDim.Value;
+
+			_parameterList.ChordProgressionFilter = node =>
+			{
+				switch (node.Data.Quality)
+				{
+					case ChordQuality.Minor:
+						return node.Multiply(min);
+					case ChordQuality.Major:
+						return node.Multiply(maj);
+					case ChordQuality.Diminished:
+						return node.Multiply(dim);
+				}
+				return node;
+			};
 		}
 
 		private void LoadParameters()
