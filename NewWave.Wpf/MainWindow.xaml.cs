@@ -11,21 +11,23 @@ namespace NewWave.Wpf
 {
 	public partial class MainWindow
 	{
-		private BackgroundWorker _backgroundWorker;
+		private BackgroundWorker _generator;
+		private BackgroundWorker _renderer;
+		private GeneratedSong _song;
+
 		private readonly string _exportFolder = $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyMusic)}\NewWave Export";
 
 		public MainWindow()
 		{
 			InitializeComponent();
 			Title = $"{FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductName} {Assembly.GetExecutingAssembly().GetName().Version}";
-			InitializeGenerator();
+			InitializeGenerators();
 		}
 
-		private void InitializeGenerator()
+		private void InitializeGenerators()
 		{
-			// Set up background worker
-			_backgroundWorker = new BackgroundWorker();
-			_backgroundWorker.DoWork += (o, args) =>
+			_generator = new BackgroundWorker();
+			_generator.DoWork += (o, args) =>
 			{
 				// Create export folder
 				if (!Directory.Exists(_exportFolder))
@@ -35,17 +37,28 @@ namespace NewWave.Wpf
 
 				var song = new GeneratedSong();
 				song.Generate(new ParameterList());
-				var score = song.Render();
+				args.Result = song;
+			};
+			_generator.RunWorkerCompleted += (o, args) =>
+			{
+				BtnGenerate.Content = "Generate";
+				BtnGenerate.IsEnabled = true;
+				_song = (GeneratedSong)args.Result;
+				BtnRender.IsEnabled = true;
+			};
+
+			_renderer = new BackgroundWorker();
+			_renderer.DoWork += (o, args) =>
+			{
+				var score = _song.Render();
 				var outputPath = $@"{_exportFolder}\{DateTime.Now:yyyyMMddhhmmss}.mid";
 				score.ExportMidi(outputPath);
 				args.Result = outputPath;
 			};
-
-			_backgroundWorker.RunWorkerCompleted += (o, args) =>
+			_renderer.RunWorkerCompleted += (o, args) =>
 			{
-				BtnExport.Content = "Export";
-				BtnExport.IsEnabled = true;
-
+				BtnRender.Content = "Render";
+				BtnRender.IsEnabled = true;
 				if (ChkPlay.IsChecked ?? false)
 				{
 					Process.Start(args.Result.ToString());
@@ -53,11 +66,18 @@ namespace NewWave.Wpf
 			};
 		}
 
-		private void Export(object sender, RoutedEventArgs e)
+		private void Generate(object sender, RoutedEventArgs e)
 		{
-			BtnExport.Content = "Exporting...";
-			BtnExport.IsEnabled = false;
-			_backgroundWorker.RunWorkerAsync();
+			BtnGenerate.Content = "Generating...";
+			BtnGenerate.IsEnabled = false;
+			_generator.RunWorkerAsync();
+		}
+
+		private void Render(object sender, RoutedEventArgs e)
+		{
+			BtnRender.Content = "Rendering...";
+			BtnRender.IsEnabled = false;
+			_renderer.RunWorkerAsync();
 		}
 	}
 }

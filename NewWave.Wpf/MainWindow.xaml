@@ -8,7 +8,8 @@
 		<Label>Options</Label>
 
 		<StackPanel Orientation="Horizontal">
-			<Button Click="Export" Name="BtnExport" MinWidth="75" Padding="10">Export</Button>
+			<Button Click="Generate" Name="BtnGenerate" MinWidth="75" Padding="10">Generate</Button>
+			<Button Click="Render" Name="BtnRender" MinWidth="75" Padding="10" IsEnabled="False">Render</Button>
 			<CheckBox Name="ChkPlay" VerticalAlignment="Center" Margin="10" IsChecked="True">Play when finished</CheckBox>
 		</StackPanel>
 	</StackPanel>
