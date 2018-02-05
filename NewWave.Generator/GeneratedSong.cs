@@ -13,24 +13,23 @@ namespace NewWave.Generator
 {
 	public class GeneratedSong : Song
 	{
-		public SongInfo SongInfo { get; private set; }
+		private SongInfo _songInfo;
 
 		internal List<SongSection> Sections;
 
-		public override string Generate(IParameterList parameterList)
+		public override void Generate(IParameterList parameterList)
 		{
 			var param = (ParameterList)parameterList;
 			var time = param.TimeSignatureFunc();
 			var feel = param.FeelFunc(time);
-			SongInfo = new SongInfo(time, feel) { Parameters = param };
+			_songInfo = new SongInfo(time, feel) { Parameters = param };
 
-			var sections = new SectionLayoutGenerator().GetSectionLayout(SongInfo).ToList();
+			var sections = new SectionLayoutGenerator().GetSectionLayout(_songInfo).ToList();
 			var chordProgressions = GetDistinctChordProgressions(param, sections.Distinct().Count());
 			var mappedChordProgressions = sections.Distinct().Select((s, i) => new Tuple<int, SectionType>(i, s));
 			var sectionTypes = mappedChordProgressions.Distinct()
-				.ToDictionary(s => s.Item2, s => new SongSection(SongInfo, s.Item2, chordProgressions[s.Item1]));
+				.ToDictionary(s => s.Item2, s => new SongSection(_songInfo, s.Item2, chordProgressions[s.Item1]));
 			Sections = sections.Select(s => sectionTypes[s]).ToList();
-			return WriteStats(SongInfo);
 		}
 
 		public override Score Render()
@@ -46,29 +45,29 @@ namespace NewWave.Generator
 			var renderedSections = Sections.Select(s => s.Render(guitarR, guitarL, guitarC, guitarLc, guitarRc, bass, drums));
 
 			return new Score(renderedSections.Sum(s => s),
-				new Dictionary<int, TimeSignature> { { 0, SongInfo.TimeSignature } },
-				new Dictionary<int, int> { { 0, SongInfo.Tempo } },
+				new Dictionary<int, TimeSignature> { { 0, _songInfo.TimeSignature } },
+				new Dictionary<int, int> { { 0, _songInfo.Tempo } },
 				new List<InstrumentTrack> { guitarL, guitarR, guitarC, guitarLc, guitarRc, bass },
 				drums);
 		}
 
-		private string WriteStats(SongInfo songInfo)
+		public string WriteStats()
 		{
-			var totalBeatCount = Sections.Sum(s => s.Measures * songInfo.TimeSignature.BeatCount);
-			var totalMinutes = (double)totalBeatCount / SongInfo.Tempo;
+			var totalBeatCount = Sections.Sum(s => s.Measures * _songInfo.TimeSignature.BeatCount);
+			var totalMinutes = (double)totalBeatCount / _songInfo.Tempo;
 			var minutes = (int)totalMinutes;
 			var seconds = (int)((totalMinutes - minutes) * 60);
 
 			var sb = new StringBuilder();
 			sb.AppendLine(DisplayName);
 			sb.AppendLine("----------");
-			sb.AppendLine(string.Format("Measures: {0}", Sections.Sum(s => s.Measures)));
-			sb.AppendLine(string.Format("Attempted song length: {0:0}:{1:00}", songInfo.LengthInSeconds / 60, songInfo.LengthInSeconds % 60));
-			sb.AppendLine(string.Format("Song length: {0}:{1:00}", minutes, seconds));
-			sb.AppendLine(string.Format("Time signature: {0}", SongInfo.TimeSignature));
-			sb.AppendLine(string.Format("Tempo: {0}", SongInfo.Tempo));
-			sb.AppendLine(string.Format("Feel: 1/{0}", SongInfo.Feel));
-			sb.AppendLine(string.Format("Key: {0}maj / {1}min", SongInfo.Parameters.MajorKey.NoteName(), SongInfo.Parameters.MinorKey.NoteName()));
+			sb.AppendLine($"Measures: {Sections.Sum(s => s.Measures)}");
+			sb.AppendLine($"Attempted song length: {_songInfo.LengthInSeconds / 60:0}:{_songInfo.LengthInSeconds % 60:00}");
+			sb.AppendLine($"Song length: {minutes}:{seconds:00}");
+			sb.AppendLine($"Time signature: {_songInfo.TimeSignature}");
+			sb.AppendLine($"Tempo: {_songInfo.Tempo}");
+			sb.AppendLine($"Feel: 1/{_songInfo.Feel}");
+			sb.AppendLine($"Key: {_songInfo.Parameters.MajorKey.NoteName()}maj / {_songInfo.Parameters.MinorKey.NoteName()}min");
 			return sb.ToString();
 		}
 

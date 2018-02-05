@@ -30,7 +30,8 @@ namespace NewWave.Test.GeneratorTests
 		public void GenerateTest()
 		{
 			var song = new GeneratedSong();
-			Console.WriteLine(song.Generate(Parameters));
+			song.Generate(Parameters);
+			Console.WriteLine(song.WriteStats());
 			foreach (var section in song.Sections)
 			{
 				Console.WriteLine("{0}: {1} meas, {2}", section.Type, section.Measures, string.Join(" - ", section.Chords.Select(c => c.Item2)));

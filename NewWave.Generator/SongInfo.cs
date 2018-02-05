@@ -1,4 +1,5 @@
-﻿using NewWave.Core;
+﻿using System;
+using NewWave.Core;
 using NewWave.Generator.Parameters;
 
 namespace NewWave.Generator
@@ -14,14 +15,14 @@ namespace NewWave.Generator
 		private ParameterList _parameters;
 		public ParameterList Parameters
 		{
-			get { return _parameters; }
+			get => _parameters;
 			set
 			{
 				_parameters = value;
 				if (_parameters != null)
 				{
 					Tempo = (int)Randomizer.NextNormalized(value.TempoMean, value.TempoStandardDeviation);
-					LengthInSeconds = Randomizer.NextNormalized(value.LengthInSecondsMean, value.LengthInSecondsStandardDeviation);
+					LengthInSeconds = Math.Max(Randomizer.NextNormalized(value.LengthInSecondsMean, value.LengthInSecondsStandardDeviation), 0);
 				}
 			}
 		}

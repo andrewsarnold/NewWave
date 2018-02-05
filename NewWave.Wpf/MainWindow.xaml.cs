@@ -53,9 +53,7 @@ namespace NewWave.Wpf
 				BtnGenerate.IsEnabled = true;
 				_song = (GeneratedSong)args.Result;
 				BtnRender.IsEnabled = true;
-
-				var length = new TimeSpan(0, 0, (int)_song.SongInfo.LengthInSeconds).ToString(@"mm\:ss");
-				TxtGeneratedResults.Text = $"Tempo: {_song.SongInfo.Tempo} bpm\nTarget length: {length}";
+				TxtGeneratedResults.Text = _song.WriteStats();
 			};
 
 			_renderer = new BackgroundWorker();
@@ -101,6 +99,7 @@ namespace NewWave.Wpf
 		{
 			var isDropTuning = ((ComboBoxItem)CmbTuning.SelectedItem).Content.ToString() == "Drop";
 			var key = PitchExtensions.FromString(((ComboBoxItem)CmbKey.SelectedItem).Content.ToString());
+			_parameterList.MinorKeyFunc = () => key.ToMidiPitch(3);
 			_parameterList.GuitarTuning = GuitarTuningLibrary.FromPitch(key, isDropTuning);
 			_parameterList.BassTuning = _parameterList.GuitarTuning.ToBassTuning();
 			_parameterList.TempoMean = SldTempoMean.Value;
