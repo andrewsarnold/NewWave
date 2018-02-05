@@ -1,0 +1,89 @@
+﻿<Window x:Class="NewWave.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" Height="350" Width="550">
+	<Window.Resources>
+		<Style TargetType="Label">
+			<Setter Property="FontSize" Value="20" />
+		</Style>
+		<Style TargetType="StackPanel">
+			<Setter Property="Margin" Value="10" />
+		</Style>
+		<Style TargetType="Button">
+			<Setter Property="Padding" Value="10" />
+			<Setter Property="Margin" Value="2" />
+		</Style>
+	</Window.Resources>
+    <Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="Auto" />
+		</Grid.ColumnDefinitions>
+
+		<ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Column="0">
+			<StackPanel>
+				<Label>Options</Label>
+				<StackPanel Orientation="Horizontal">
+					<Button Click="LoadParams">Load</Button>
+					<Button Click="SaveParams">Save</Button>
+				</StackPanel>
+				
+				<TextBlock>Guitar tuning</TextBlock>
+				<ComboBox Name="CmbTuning">
+					<ComboBoxItem IsSelected="True">Standard</ComboBoxItem>
+					<ComboBoxItem>Drop</ComboBoxItem>
+				</ComboBox>
+				
+				<TextBlock>Guitar key</TextBlock>
+				<ComboBox Name="CmbKey">
+					<ComboBoxItem IsSelected="True">E</ComboBoxItem>
+					<ComboBoxItem>Eb</ComboBoxItem>
+					<ComboBoxItem>D</ComboBoxItem>
+					<ComboBoxItem>Db</ComboBoxItem>
+					<ComboBoxItem>C</ComboBoxItem>
+					<ComboBoxItem>B</ComboBoxItem>
+					<ComboBoxItem>Bb</ComboBoxItem>
+					<ComboBoxItem>A</ComboBoxItem>
+					<ComboBoxItem>Ab</ComboBoxItem>
+					<ComboBoxItem>G</ComboBoxItem>
+					<ComboBoxItem>Gb</ComboBoxItem>
+					<ComboBoxItem>F</ComboBoxItem>
+				</ComboBox>
+				
+				<TextBlock>Tempo mean</TextBlock>
+				<Slider Name="SldTempoMean" Value="120" Minimum="60" Maximum="240" TickPlacement="TopLeft" TickFrequency="20" AutoToolTipPlacement="TopLeft"></Slider>
+				<TextBlock>Tempo standard deviation</TextBlock>
+				<Slider Name="SldTempoStdDev" Value="20" Minimum="0" Maximum="40" TickPlacement="TopLeft" TickFrequency="5" AutoToolTipPlacement="TopLeft"></Slider>
+
+				<TextBlock>Length (target) mean</TextBlock>
+				<Slider Name="SldLengthMean" Value="180" Minimum="0" Maximum="600" TickPlacement="TopLeft" TickFrequency="20" AutoToolTipPlacement="TopLeft"></Slider>
+				<TextBlock>Length (target) standard deviation</TextBlock>
+				<Slider Name="SldLengthStdDev" Value="20" Minimum="0" Maximum="240" TickPlacement="TopLeft" TickFrequency="5" AutoToolTipPlacement="TopLeft"></Slider>
+				
+				<Label>Chord progression params</Label>
+				<TextBlock>Affinity for major</TextBlock>
+				<Slider Name="SldChordMajor" Value="1" Minimum="0" Maximum="10" SmallChange="0.1" TickPlacement="TopLeft" TickFrequency="0.1" AutoToolTipPlacement="TopLeft"></Slider>
+				<TextBlock>Affinity for minor</TextBlock>
+				<Slider Name="SldChordMinor" Value="1" Minimum="0" Maximum="10" SmallChange="0.1" TickPlacement="TopLeft" TickFrequency="0.1" AutoToolTipPlacement="TopLeft"></Slider>
+				<TextBlock>Affinity for diminished</TextBlock>
+				<Slider Name="SldChordDim" Value="1" Minimum="0" Maximum="10" SmallChange="0.1" TickPlacement="TopLeft" TickFrequency="0.1" AutoToolTipPlacement="TopLeft"></Slider>
+			</StackPanel>
+		</ScrollViewer>
+
+		<StackPanel Grid.Column="1">
+			<Label>Generated song</Label>
+			<Button Click="Generate" Name="BtnGenerate" MinWidth="75" Padding="10">Generate</Button>
+
+			<TextBlock Name="TxtGeneratedResults" />
+		</StackPanel>
+
+		<StackPanel Grid.Column="2">
+			<Label>Rendered song</Label>
+			<Button Click="Render" Name="BtnRender" MinWidth="75" Padding="10" IsEnabled="False">Render</Button>
+			<CheckBox Name="ChkPlay" VerticalAlignment="Center" Margin="10" IsChecked="True">Play when finished</CheckBox>
+		</StackPanel>
+	</Grid>
+</Window>

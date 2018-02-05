@@ -14,9 +14,10 @@ namespace NewWave.Generator
 	public class GeneratedSong : Song
 	{
 		private SongInfo _songInfo;
+
 		internal List<SongSection> Sections;
 
-		public override string Generate(IParameterList parameterList)
+		public override void Generate(IParameterList parameterList)
 		{
 			var param = (ParameterList)parameterList;
 			var time = param.TimeSignatureFunc();
@@ -29,7 +30,6 @@ namespace NewWave.Generator
 			var sectionTypes = mappedChordProgressions.Distinct()
 				.ToDictionary(s => s.Item2, s => new SongSection(_songInfo, s.Item2, chordProgressions[s.Item1]));
 			Sections = sections.Select(s => sectionTypes[s]).ToList();
-			return WriteStats(_songInfo);
 		}
 
 		public override Score Render()
@@ -51,9 +51,9 @@ namespace NewWave.Generator
 				drums);
 		}
 
-		private string WriteStats(SongInfo songInfo)
+		public string WriteStats()
 		{
-			var totalBeatCount = Sections.Sum(s => s.Measures * songInfo.TimeSignature.BeatCount);
+			var totalBeatCount = Sections.Sum(s => s.Measures * _songInfo.TimeSignature.BeatCount);
 			var totalMinutes = (double)totalBeatCount / _songInfo.Tempo;
 			var minutes = (int)totalMinutes;
 			var seconds = (int)((totalMinutes - minutes) * 60);
@@ -61,13 +61,13 @@ namespace NewWave.Generator
 			var sb = new StringBuilder();
 			sb.AppendLine(DisplayName);
 			sb.AppendLine("----------");
-			sb.AppendLine(string.Format("Measures: {0}", Sections.Sum(s => s.Measures)));
-			sb.AppendLine(string.Format("Attempted song length: {0:0}:{1:00}", songInfo.LengthInSeconds / 60, songInfo.LengthInSeconds % 60));
-			sb.AppendLine(string.Format("Song length: {0}:{1:00}", minutes, seconds));
-			sb.AppendLine(string.Format("Time signature: {0}", _songInfo.TimeSignature));
-			sb.AppendLine(string.Format("Tempo: {0}", _songInfo.Tempo));
-			sb.AppendLine(string.Format("Feel: 1/{0}", _songInfo.Feel));
-			sb.AppendLine(string.Format("Key: {0}maj / {1}min", _songInfo.Parameters.MajorKey.NoteName(), _songInfo.Parameters.MinorKey.NoteName()));
+			sb.AppendLine($"Measures: {Sections.Sum(s => s.Measures)}");
+			sb.AppendLine($"Attempted song length: {_songInfo.LengthInSeconds / 60:0}:{_songInfo.LengthInSeconds % 60:00}");
+			sb.AppendLine($"Song length: {minutes}:{seconds:00}");
+			sb.AppendLine($"Time signature: {_songInfo.TimeSignature}");
+			sb.AppendLine($"Tempo: {_songInfo.Tempo}");
+			sb.AppendLine($"Feel: 1/{_songInfo.Feel}");
+			sb.AppendLine($"Key: {_songInfo.Parameters.MajorKey.NoteName()}maj / {_songInfo.Parameters.MinorKey.NoteName()}min");
 			return sb.ToString();
 		}
 

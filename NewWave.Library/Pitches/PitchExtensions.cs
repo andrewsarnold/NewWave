@@ -1,4 +1,5 @@
-﻿using NewWave.Midi;
+﻿using System;
+using NewWave.Midi;
 
 namespace NewWave.Library.Pitches
 {
@@ -39,6 +40,50 @@ namespace NewWave.Library.Pitches
 		public static int OctaveOf(this MidiPitch p)
 		{
 			return (int)p / 12 - 1;
+		}
+
+		public static Pitch FromString(string input)
+		{
+			if (input.Length < 1 || input.Length > 2) throw new ArgumentOutOfRangeException();
+
+			Pitch p;
+			switch (input.ToUpper()[0])
+			{
+				case 'A':
+					p = Pitch.A;
+					break;
+				case 'B':
+					p = Pitch.B;
+					break;
+				case 'C':
+					p = Pitch.C;
+					break;
+				case 'D':
+					p = Pitch.D;
+					break;
+				case 'E':
+					p = Pitch.E;
+					break;
+				case 'F':
+					p = Pitch.F;
+					break;
+				default:
+					p = Pitch.G;
+					break;
+			}
+
+			if (input.Length == 2 && input[1] == '#')
+			{
+				p += 1;
+				if (p > Pitch.B) p -= 12;
+			}
+			else if (input.Length == 2 && input[1] == 'b')
+			{
+				p -= 1;
+				if (p < Pitch.C) p += 12;
+			}
+
+			return p;
 		}
 	}
 }

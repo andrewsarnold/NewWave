@@ -11,7 +11,7 @@ namespace NewWave.Test
 
 		internal static void RenderAndPlay(IParameterList parameterList, Song song, string fileName)
 		{
-			Console.WriteLine(song.Generate(parameterList));
+			song.Generate(parameterList);
 			var score = song.Render();
 			var outputPath = Path.Combine(Dir, fileName);
 			score.ExportMidi(outputPath);

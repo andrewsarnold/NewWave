@@ -7,6 +7,7 @@ using NewWave.Generator;
 using NewWave.Generator.ChordProgressions;
 using NewWave.Generator.Parameters;
 using NewWave.Library.Chords;
+using NewWave.Library.Pitches;
 using NewWave.Midi;
 
 namespace NewWave.Test.GeneratorTests
@@ -20,7 +21,7 @@ namespace NewWave.Test.GeneratorTests
 			MinorKeyFunc = () => new List<MidiPitch> { LowestPitch, LowestPitch + 5, LowestPitch + 2 }[Randomizer.GetWeightedIndex(new List<double>
 			{
 				0.5, 0.3, 0.2
-			})],
+			})].FromMidiPitch(),
 			TimeSignatureFunc = () => new TimeSignature(Randomizer.ProbabilityOfTrue(0.75) ? 4 : 3, 4),
 			FeelFunc = t => Randomizer.ProbabilityOfTrue(t.BeatCount == 4 ? 0.65 : 0.8) ? 4 : 3,
 			ChordProgressionFilter = MinorOrDiminshedFilter
@@ -30,7 +31,8 @@ namespace NewWave.Test.GeneratorTests
 		public void GenerateTest()
 		{
 			var song = new GeneratedSong();
-			Console.WriteLine(song.Generate(Parameters));
+			song.Generate(Parameters);
+			Console.WriteLine(song.WriteStats());
 			foreach (var section in song.Sections)
 			{
 				Console.WriteLine("{0}: {1} meas, {2}", section.Type, section.Measures, string.Join(" - ", section.Chords.Select(c => c.Item2)));

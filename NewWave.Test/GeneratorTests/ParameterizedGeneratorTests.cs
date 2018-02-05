@@ -5,6 +5,7 @@ using NewWave.Core;
 using NewWave.Generator;
 using NewWave.Generator.Parameters;
 using NewWave.Generator.Sections;
+using NewWave.Library.Pitches;
 using NewWave.Library.Tunings;
 
 namespace NewWave.Test.GeneratorTests

@@ -1,4 +1,5 @@
-﻿using NewWave.Core;
+﻿using System;
+using NewWave.Core;
 using NewWave.Generator.Parameters;
 
 namespace NewWave.Generator
@@ -21,7 +22,7 @@ namespace NewWave.Generator
 				if (_parameters != null)
 				{
 					Tempo = (int)Randomizer.NextNormalized(value.TempoMean, value.TempoStandardDeviation);
-					LengthInSeconds = Randomizer.NextNormalized(value.LengthInSecondsMean, value.LengthInSecondsStandardDeviation);
+					LengthInSeconds = Math.Max(Randomizer.NextNormalized(value.LengthInSecondsMean, value.LengthInSecondsStandardDeviation), 0);
 				}
 			}
 		}

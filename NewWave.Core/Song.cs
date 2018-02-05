@@ -10,7 +10,7 @@
 		/// Generates the song.
 		/// Any input parameters would be collected by the Song implementation's constructor.
 		/// </summary>
-		public abstract string Generate(IParameterList parameterList);
+		public abstract void Generate(IParameterList parameterList);
 
 		/// <summary>
 		/// Renders a "vector" song into a "raster" score. Does not involve any random
