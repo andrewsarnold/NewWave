@@ -8,8 +8,12 @@
 		<Style TargetType="Label">
 			<Setter Property="FontSize" Value="20" />
 		</Style>
-		<Style TargetType="Button">
+		<Style TargetType="StackPanel">
 			<Setter Property="Margin" Value="10" />
+		</Style>
+		<Style TargetType="Button">
+			<Setter Property="Padding" Value="10" />
+			<Setter Property="Margin" Value="2" />
 		</Style>
 	</Window.Resources>
     <Grid>
@@ -22,6 +26,10 @@
 		<ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Column="0">
 			<StackPanel>
 				<Label>Options</Label>
+				<StackPanel Orientation="Horizontal">
+					<Button Click="LoadParams">Load</Button>
+					<Button Click="SaveParams">Save</Button>
+				</StackPanel>
 				<TextBlock>Guitar tuning</TextBlock>
 				<ComboBox Name="CmbTuning">
 					<ComboBoxItem IsSelected="True">Standard</ComboBoxItem>

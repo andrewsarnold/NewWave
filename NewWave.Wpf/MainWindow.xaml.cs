@@ -3,8 +3,10 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.Win32;
 using NewWave.Generator;
 using NewWave.Generator.Parameters;
 using NewWave.Library.Pitches;
@@ -98,6 +100,88 @@ namespace NewWave.Wpf
 			var key = PitchExtensions.FromString(((ComboBoxItem)CmbKey.SelectedItem).Content.ToString());
 			_parameterList.GuitarTuning = GuitarTuningLibrary.FromPitch(key, isDropTuning);
 			_parameterList.BassTuning = _parameterList.GuitarTuning.ToBassTuning();
+		}
+
+		private void LoadParameters()
+		{
+			CmbTuning.SelectedIndex = _parameterList.GuitarTuning.IsDropTuning ? 1 : 0;
+			switch (_parameterList.GuitarTuning.Pitches[0].FromMidiPitch())
+			{
+				case Pitch.A:
+					CmbKey.SelectedIndex = 7;
+					break;
+				case Pitch.ASharp:
+					CmbKey.SelectedIndex = 6;
+					break;
+				case Pitch.B:
+					CmbKey.SelectedIndex = 5;
+					break;
+				case Pitch.C:
+					CmbKey.SelectedIndex = 4;
+					break;
+				case Pitch.CSharp:
+					CmbKey.SelectedIndex = 3;
+					break;
+				case Pitch.D:
+					CmbKey.SelectedIndex = 2;
+					break;
+				case Pitch.DSharp:
+					CmbKey.SelectedIndex = 1;
+					break;
+				case Pitch.E:
+					CmbKey.SelectedIndex = 0;
+					break;
+				case Pitch.F:
+					CmbKey.SelectedIndex = 11;
+					break;
+				case Pitch.FSharp:
+					CmbKey.SelectedIndex = 10;
+					break;
+				case Pitch.G:
+					CmbKey.SelectedIndex = 9;
+					break;
+				case Pitch.GSharp:
+					CmbKey.SelectedIndex = 8;
+					break;
+			}
+		}
+
+		private void LoadParams(object sender, RoutedEventArgs e)
+		{
+			var dialog = new OpenFileDialog
+			{
+				FileName = "params",
+				DefaultExt = ".nwp",
+				Filter = "NewWave parameters (*.nwp)|*.nwp"
+			};
+
+			if (dialog.ShowDialog() ?? false)
+			{
+				using (Stream stream = File.Open(dialog.FileName, FileMode.Open))
+				{
+					_parameterList = (ParameterList)new BinaryFormatter().Deserialize(stream);
+				}
+				LoadParameters();
+			}
+		}
+
+		private void SaveParams(object sender, RoutedEventArgs e)
+		{
+			var dialog = new SaveFileDialog
+			{
+				FileName = "params",
+				DefaultExt = ".nwp",
+				Filter = "NewWave parameters (*.nwp)|*.nwp"
+			};
+
+			if (dialog.ShowDialog() ?? false)
+			{
+				SetParameters();
+				using (var stream = File.Open(dialog.FileName, FileMode.Create))
+				{
+					new BinaryFormatter().Serialize(stream, _parameterList);
+				}
+			}
 		}
 	}
 }

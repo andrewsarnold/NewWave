@@ -7,6 +7,7 @@ using NewWave.Midi;
 
 namespace NewWave.Generator.Parameters
 {
+	[Serializable]
 	public class ParameterList : IParameterList
 	{
 		public double TempoMean;
