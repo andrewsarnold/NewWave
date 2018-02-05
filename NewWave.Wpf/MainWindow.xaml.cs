@@ -8,10 +8,6 @@ using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
 using NewWave.Generator;
-using NewWave.Generator.Parameters;
-using NewWave.Library.Chords;
-using NewWave.Library.Pitches;
-using NewWave.Library.Tunings;
 
 namespace NewWave.Wpf
 {
@@ -20,7 +16,7 @@ namespace NewWave.Wpf
 		private BackgroundWorker _generator;
 		private BackgroundWorker _renderer;
 
-		private ParameterList _parameterList;
+		private UiParameterList _parameterList;
 		private GeneratedSong _song;
 
 		private readonly string _exportFolder = $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyMusic)}\NewWave Export";
@@ -45,7 +41,7 @@ namespace NewWave.Wpf
 				}
 
 				var song = new GeneratedSong();
-				song.Generate(_parameterList);
+				song.Generate(_parameterList.ToParameterList());
 				args.Result = song;
 			};
 			_generator.RunWorkerCompleted += (o, args) =>
@@ -78,7 +74,7 @@ namespace NewWave.Wpf
 
 		private void InitializeParameters()
 		{
-			_parameterList = new ParameterList();
+			_parameterList = new UiParameterList();
 		}
 
 		private void Generate(object sender, RoutedEventArgs e)
@@ -98,82 +94,36 @@ namespace NewWave.Wpf
 
 		private void SetParameters()
 		{
-			var isDropTuning = ((ComboBoxItem)CmbTuning.SelectedItem).Content.ToString() == "Drop";
-			var key = PitchExtensions.FromString(((ComboBoxItem)CmbKey.SelectedItem).Content.ToString());
-			_parameterList.MinorKeyFunc = () => key;
-			_parameterList.GuitarTuning = GuitarTuningLibrary.FromPitch(key, isDropTuning);
-			_parameterList.BassTuning = _parameterList.GuitarTuning.ToBassTuning();
+			_parameterList.Key = ((ComboBoxItem)CmbKey.SelectedItem).Content.ToString();
+			_parameterList.Tuning = ((ComboBoxItem)CmbTuning.SelectedItem).Content.ToString();
 			_parameterList.TempoMean = SldTempoMean.Value;
-			_parameterList.TempoStandardDeviation = SldTempoStdDev.Value;
-			_parameterList.LengthInSecondsMean = SldLengthMean.Value;
-			_parameterList.LengthInSecondsStandardDeviation = SldLengthStdDev.Value;
-
-			var min = SldChordMinor.Value;
-			var maj = SldChordMajor.Value;
-			var dim = SldChordDim.Value;
-
-			_parameterList.ChordProgressionFilter = node =>
-			{
-				switch (node.Data.Quality)
-				{
-					case ChordQuality.Minor:
-						return node.Multiply(min);
-					case ChordQuality.Major:
-						return node.Multiply(maj);
-					case ChordQuality.Diminished:
-						return node.Multiply(dim);
-				}
-				return node;
-			};
+			_parameterList.TempoStdDev = SldTempoStdDev.Value;
+			_parameterList.LengthMean = SldLengthMean.Value;
+			_parameterList.LengthStdDev = SldLengthStdDev.Value;
+			_parameterList.MajorAffinity = SldChordMajor.Value;
+			_parameterList.MinorAffinity = SldChordMinor.Value;
+			_parameterList.DiminishedAffinity = SldChordDim.Value;
 		}
 
 		private void LoadParameters()
 		{
-			CmbTuning.SelectedIndex = _parameterList.GuitarTuning.IsDropTuning ? 1 : 0;
-			switch (_parameterList.GuitarTuning.Pitches[0].FromMidiPitch())
+			CmbTuning.SelectedIndex = _parameterList.Tuning == "Drop" ? 1 : 0;
+			for (var i = 0; i < CmbKey.Items.Count; i++)
 			{
-				case Pitch.A:
-					CmbKey.SelectedIndex = 7;
+				if (((ComboBoxItem)CmbKey.Items[i]).Content.ToString() == _parameterList.Key)
+				{
+					CmbKey.SelectedIndex = i;
 					break;
-				case Pitch.ASharp:
-					CmbKey.SelectedIndex = 6;
-					break;
-				case Pitch.B:
-					CmbKey.SelectedIndex = 5;
-					break;
-				case Pitch.C:
-					CmbKey.SelectedIndex = 4;
-					break;
-				case Pitch.CSharp:
-					CmbKey.SelectedIndex = 3;
-					break;
-				case Pitch.D:
-					CmbKey.SelectedIndex = 2;
-					break;
-				case Pitch.DSharp:
-					CmbKey.SelectedIndex = 1;
-					break;
-				case Pitch.E:
-					CmbKey.SelectedIndex = 0;
-					break;
-				case Pitch.F:
-					CmbKey.SelectedIndex = 11;
-					break;
-				case Pitch.FSharp:
-					CmbKey.SelectedIndex = 10;
-					break;
-				case Pitch.G:
-					CmbKey.SelectedIndex = 9;
-					break;
-				case Pitch.GSharp:
-					CmbKey.SelectedIndex = 8;
-					break;
+				}
 			}
 
 			SldTempoMean.Value = _parameterList.TempoMean;
-			SldTempoStdDev.Value = _parameterList.TempoStandardDeviation;
-			SldLengthMean.Value = _parameterList.LengthInSecondsMean;
-			SldLengthStdDev.Value = _parameterList.LengthInSecondsStandardDeviation;
+			SldTempoStdDev.Value = _parameterList.TempoStdDev;
+			SldLengthMean.Value = _parameterList.LengthMean;
+			SldLengthStdDev.Value = _parameterList.LengthStdDev;
+			SldChordMajor.Value = _parameterList.MajorAffinity;
+			SldChordMinor.Value = _parameterList.MinorAffinity;
+			SldChordDim.Value = _parameterList.DiminishedAffinity;
 		}
 
 		private void LoadParams(object sender, RoutedEventArgs e)
@@ -189,7 +139,7 @@ namespace NewWave.Wpf
 			{
 				using (Stream stream = File.Open(dialog.FileName, FileMode.Open))
 				{
-					_parameterList = (ParameterList)new BinaryFormatter().Deserialize(stream);
+					_parameterList = (UiParameterList)new BinaryFormatter().Deserialize(stream);
 				}
 				LoadParameters();
 			}

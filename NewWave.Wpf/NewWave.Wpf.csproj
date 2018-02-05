@@ -54,6 +54,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="UiParameterList.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -99,16 +100,12 @@
       <Name>NewWave.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\NewWave.Generator\NewWave.Generator.csproj">
-      <Project>{B48F521E-0AA9-4EAB-9EC1-ECBC726981DD}</Project>
+      <Project>{b48f521e-0aa9-4eab-9ec1-ecbc726981dd}</Project>
       <Name>NewWave.Generator</Name>
     </ProjectReference>
     <ProjectReference Include="..\NewWave.Library\NewWave.Library.csproj">
-      <Project>{F826AE15-ED89-4CF3-92E4-BF3B8DC5A53C}</Project>
+      <Project>{f826ae15-ed89-4cf3-92e4-bf3b8dc5a53c}</Project>
       <Name>NewWave.Library</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NewWave.Midi\NewWave.Midi.csproj">
-      <Project>{0ECAF30F-55BA-4DC0-8E99-F85307C9AB8D}</Project>
-      <Name>NewWave.Midi</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

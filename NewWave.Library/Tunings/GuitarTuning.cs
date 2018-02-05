@@ -1,9 +1,7 @@
-﻿using System;
-using NewWave.Midi;
+﻿using NewWave.Midi;
 
 namespace NewWave.Library.Tunings
 {
-	[Serializable]
 	public class GuitarTuning
 	{
 		public readonly MidiPitch[] Pitches;
