@@ -103,6 +103,7 @@ namespace NewWave.Wpf
 			_parameterList.MajorAffinity = SldChordMajor.Value;
 			_parameterList.MinorAffinity = SldChordMinor.Value;
 			_parameterList.DiminishedAffinity = SldChordDim.Value;
+			_parameterList.BlastAffinity = SldBlast.Value;
 		}
 
 		private void LoadParameters()
@@ -124,6 +125,7 @@ namespace NewWave.Wpf
 			SldChordMajor.Value = _parameterList.MajorAffinity;
 			SldChordMinor.Value = _parameterList.MinorAffinity;
 			SldChordDim.Value = _parameterList.DiminishedAffinity;
+			SldBlast.Value = _parameterList.BlastAffinity;
 		}
 
 		private void LoadParams(object sender, RoutedEventArgs e)

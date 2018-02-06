@@ -1,6 +1,7 @@
 ﻿using System;
 using NewWave.Core;
 using NewWave.Generator.Parameters;
+using NewWave.Generator.Sections;
 using NewWave.Library.Chords;
 using NewWave.Library.Pitches;
 using NewWave.Library.Tunings;
@@ -19,6 +20,7 @@ namespace NewWave.Wpf
 		internal double MajorAffinity;
 		internal double MinorAffinity;
 		internal double DiminishedAffinity;
+		internal double BlastAffinity;
 
 		internal ParameterList ToParameterList()
 		{
@@ -47,7 +49,8 @@ namespace NewWave.Wpf
 							return node.Multiply(DiminishedAffinity);
 					}
 					return node;
-				}
+				},
+				DrumStyle = t => new DrumStyle(t, BlastAffinity)
 			};
 		}
 	}
