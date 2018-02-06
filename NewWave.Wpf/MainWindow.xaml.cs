@@ -103,6 +103,8 @@ namespace NewWave.Wpf
 			_parameterList.MajorAffinity = SldChordMajor.Value;
 			_parameterList.MinorAffinity = SldChordMinor.Value;
 			_parameterList.DiminishedAffinity = SldChordDim.Value;
+			_parameterList.AugmentedAffinity = SldChordAug.Value;
+			_parameterList.SuspendedAffinity = SldChordSus.Value;
 			_parameterList.BlastAffinity = SldBlast.Value;
 		}
 
@@ -125,6 +127,8 @@ namespace NewWave.Wpf
 			SldChordMajor.Value = _parameterList.MajorAffinity;
 			SldChordMinor.Value = _parameterList.MinorAffinity;
 			SldChordDim.Value = _parameterList.DiminishedAffinity;
+			SldChordAug.Value = _parameterList.AugmentedAffinity;
+			SldChordSus.Value = _parameterList.SuspendedAffinity;
 			SldBlast.Value = _parameterList.BlastAffinity;
 		}
 
@@ -132,7 +136,6 @@ namespace NewWave.Wpf
 		{
 			var dialog = new OpenFileDialog
 			{
-				FileName = "params",
 				DefaultExt = ".nwp",
 				Filter = "NewWave parameters (*.nwp)|*.nwp"
 			};
@@ -151,7 +154,6 @@ namespace NewWave.Wpf
 		{
 			var dialog = new SaveFileDialog
 			{
-				FileName = "params",
 				DefaultExt = ".nwp",
 				Filter = "NewWave parameters (*.nwp)|*.nwp"
 			};

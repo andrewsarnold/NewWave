@@ -20,6 +20,8 @@ namespace NewWave.Wpf
 		internal double MajorAffinity;
 		internal double MinorAffinity;
 		internal double DiminishedAffinity;
+		internal double AugmentedAffinity;
+		internal double SuspendedAffinity;
 		internal double BlastAffinity;
 
 		internal ParameterList ToParameterList()
@@ -47,6 +49,10 @@ namespace NewWave.Wpf
 							return node.Multiply(MinorAffinity);
 						case ChordQuality.Diminished:
 							return node.Multiply(DiminishedAffinity);
+						case ChordQuality.Augmented:
+							return node.Multiply(AugmentedAffinity);
+						case ChordQuality.Suspended:
+							return node.Multiply(SuspendedAffinity);
 					}
 					return node;
 				},

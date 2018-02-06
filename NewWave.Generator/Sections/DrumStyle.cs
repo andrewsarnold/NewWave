@@ -71,7 +71,11 @@ namespace NewWave.Generator.Sections
 
 			if (groove.TimeSignature.BeatCount % 4 == 0)
 			{
-				snareList = EveryNthOfBeat(groove.TimeSignature.BeatCount, groove.Feel / 2.0, 1).ToList();
+				snareList = Randomizer.ProbabilityOfTrue(0.5)
+					? EveryNthOfBeat(groove.TimeSignature.BeatCount, groove.Feel / 2.0, 1).ToList() // <- on the 2 and 4
+					: EveryNthOfBeat(groove.TimeSignature.BeatCount, groove.Feel, 2).ToList(); // <- on the 3
+
+				// EveryNthOfBeat(groove.TimeSignature.BeatCount, groove.Feel / 4.0, 1).ToList() <- every beat
 			}
 			else if (groove.TimeSignature.BeatCount % 3 == 0)
 			{
@@ -92,7 +96,9 @@ namespace NewWave.Generator.Sections
 				}
 			}
 
-			kicks = groove.Beats.Where(b => !snareList.Contains(b));
+			kicks = Randomizer.ProbabilityOfTrue(0.2)
+				? groove.Beats.Where(b => !snareList.Contains(b)) // <- all groove beats
+				: EveryNthOfBeat(groove.TimeSignature.BeatCount, groove.Feel / new[] { 1.0, 2.0, 4.0 }[Randomizer.GetWeightedIndex(new List<double> { 0.4, 0.4, 0.2 })]).Where(b => !snareList.Contains(b)); // <- the main beats
 			snares = snareList;
 		}
 
